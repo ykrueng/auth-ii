@@ -1,6 +1,6 @@
 import React from "react";
-import { Segment, Header, Button } from "semantic-ui-react";
-import { Route, NavLink } from "react-router-dom";
+import { Segment } from "semantic-ui-react";
+import { Route } from "react-router-dom";
 import axios from "axios";
 
 import Home from "./components/Home";

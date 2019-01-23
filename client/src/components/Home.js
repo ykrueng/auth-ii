@@ -1,8 +1,7 @@
 import React from 'react';
-import { Segment, Header, Button, Image } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Segment, Header, Button } from 'semantic-ui-react';
 
-const Home = ({ isLoggedIn }) => {
+const Home = ({ isLoggedIn, history }) => {
   return (
     <Segment textAlign="center">
     <Header as="h1" textAlign="center">
@@ -12,10 +11,16 @@ const Home = ({ isLoggedIn }) => {
       !isLoggedIn &&
       <>
         <Button
-          content={<Link to='/signin'>Sign In</Link>}
+          color="black"
+          content='Sign In'
+          icon='sign-in'
+          onClick={() => history.push('/signin')}
         />
         <Button
-          content={<Link to='/signup'>Sign Up</Link>}
+          color="black"
+          content='Sign Up'
+          icon='signup'
+          onClick={() => history.push('/signup')}
         />
       </>
     }
