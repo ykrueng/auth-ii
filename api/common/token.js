@@ -1,6 +1,7 @@
+require('dotenv').config();
 const jwt = require("jsonwebtoken");
 
-const secret = "Regex is not for human.";
+const secret = process.env.JWT_SECRET;
 const options = {
   expiresIn: "1h",
   jwtid: "12345" //jti
