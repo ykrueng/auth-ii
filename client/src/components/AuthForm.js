@@ -1,7 +1,7 @@
 import React from "react";
-import { Segment, Header, Form, Button } from "semantic-ui-react";
+import { Segment, Header, Form, Button, Divider } from "semantic-ui-react";
 
-class SignupForm extends React.Component {
+class AuthForm extends React.Component {
   state = {
     username: "",
     password: "",
@@ -21,8 +21,13 @@ class SignupForm extends React.Component {
   handleSubmit = async(e) => {
     e.preventDefault();
 
-    const account = this.state;
-    this.props.register(account);
+    const { username, password, department } = this.state;
+    const { signup, submit } = this.props;
+
+    const account = { username, password };
+    if (signup) account.department = department;
+
+    submit(account, signup);
     this.setState({
       username: '',
       password: '',
@@ -32,6 +37,7 @@ class SignupForm extends React.Component {
 
   render() {
     const { username, password, department } = this.state;
+    const { signup } = this.props;
     return (
       <Segment
         style={{
@@ -40,7 +46,7 @@ class SignupForm extends React.Component {
         }}
       >
         <Header as="h2" textAlign="center">
-          Sign Up Form
+          {signup ? 'Sign Up Form' : 'Sign In Form'}
         </Header>
         <Form onSubmit={this.handleSubmit}>
           <Form.Input
@@ -58,19 +64,36 @@ class SignupForm extends React.Component {
             label="Password"
             type="password"
           />
-          <Form.Input
-            name="department"
-            value={department}
-            onChange={this.handleTextInput}
-            placeholder="Enter department"
-            label="Department"
-          />
+          {
+            signup && 
+            <Form.Input
+              name="department"
+              value={department}
+              onChange={this.handleTextInput}
+              placeholder="Enter department"
+              label="Department"
+            />
+          }
           <Button
             fluid
             color="linkedin"
-            icon="signup"
-            content="Create Account"
+            icon={signup ? "signup" : 'sign-in'}
+            content={signup ? "Create Account" : 'Log In'}
             type="submit"
+          />
+          <Divider />
+          <p>
+            {signup ? 'Already Have an Account?' : "Don't Have an Account?"}
+          </p>
+          <Button
+            style={{
+              marginTop: '20px'
+            }}
+            fluid
+            color="linkedin"
+            icon={signup ? "sign-in" : 'signup'}
+            content={signup ? "Sign In" : "Create an Accout"}
+            onClick={() => this.props.history.push(signup? '/signin' : '/signup')}
           />
         </Form>
       </Segment>
@@ -78,4 +101,4 @@ class SignupForm extends React.Component {
   }
 }
 
-export default SignupForm;
+export default AuthForm;

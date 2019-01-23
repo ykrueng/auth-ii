@@ -3,7 +3,7 @@ import { Segment, Header } from "semantic-ui-react";
 import { Route } from "react-router-dom";
 import axios from "axios";
 
-import SignupForm from "./components/SignupForm";
+import AuthForm from "./components/AuthForm";
 
 class App extends React.Component {
   state = {
@@ -12,10 +12,12 @@ class App extends React.Component {
     error: null,
   };
 
-  register = async account => {
+  authenticate = async (account, signup) => {
+    const baseURL = `http://localhost:8000/api/`;
+
     try {
       const auth = await axios.post(
-        "http://localhost:8000/api/register",
+        `${baseURL}${signup ? 'register' : 'login'}`,
         account
       );
 
@@ -32,7 +34,8 @@ class App extends React.Component {
         error: err,
       });
     }
-  };
+  }
+
   render() {
     const { isLoggedIn } = this.state;
     return (
@@ -49,9 +52,21 @@ class App extends React.Component {
           exact
           path="/signup"
           render={props => (
-            <SignupForm
+            <AuthForm
               {...props}
-              register={this.register}
+              signup
+              submit={this.authenticate}
+              isLoggedIn={isLoggedIn}
+            />
+          )}
+        />
+        <Route
+          exact
+          path="/signin"
+          render={props => (
+            <AuthForm
+              {...props}
+              submit={this.authenticate}
               isLoggedIn={isLoggedIn}
             />
           )}
