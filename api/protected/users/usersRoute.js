@@ -7,7 +7,7 @@ const { decodeToken } = require("../../common/token");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const { token } = req.body;
+  const token = req.headers.authorization;
   const payload = decodeToken(token);
 
   try {
