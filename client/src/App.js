@@ -1,9 +1,10 @@
 import React from "react";
-import { Segment, Header, Card } from "semantic-ui-react";
-import { Route } from "react-router-dom";
+import { Segment, Header, Card, Button } from "semantic-ui-react";
+import { Route, Link } from "react-router-dom";
 import axios from "axios";
 
 import AuthForm from "./components/AuthForm";
+import UserList from "./components/UserList";
 
 class App extends React.Component {
   state = {
@@ -13,12 +14,26 @@ class App extends React.Component {
     users: null,
   };
 
+  componentDidMount() {
+    const token = localStorage.getItem('auth');
+
+    if (token) {
+      this.getUsers(token);
+      this.setState({
+        isLoggedIn: true,
+        token
+      })
+    }
+  }
+
   getUsers = async (token) => {
     try {
       const users = await axios({
         url: `http://localhost:8000/api/protected/users`,
         headers: { authorization: token }
       });
+
+      console.log(users);
 
       this.setState({
         users: users.data
@@ -43,6 +58,7 @@ class App extends React.Component {
         account
       );
 
+      localStorage.setItem('auth', auth.data.token);
       this.getUsers(auth.data.token);
 
       this.setState({
@@ -62,6 +78,7 @@ class App extends React.Component {
 
   render() {
     const { isLoggedIn, users } = this.state;
+    console.log(isLoggedIn);
     return (
       <Segment
         style={{
@@ -73,11 +90,19 @@ class App extends React.Component {
           Welcome to Auth-II
         </Header>
         {
-          users &&
-          users.map(user => (
-            <Card key={user.id}>{user.username}</Card>
-          ))
+          !isLoggedIn &&
+          <Segment textAlign="center">
+            <Button
+              content={<Link to='/signup'>Sign Up</Link>}
+            />
+            <Button
+              content={<Link to='/signin'>Sign In</Link>}
+            />
+          </Segment>
         }
+        <Route exact path='/users' render={props => (
+          <UserList {...props} users={users}/>
+        )}/>
         <Route
           exact
           path="/signup"

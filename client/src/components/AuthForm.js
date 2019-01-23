@@ -9,7 +9,7 @@ class AuthForm extends React.Component {
   };
 
   componentWillReceiveProps(props) {
-    props.isLoggedIn && this.props.history.push('/')
+    props.isLoggedIn && this.props.history.push('/users')
   }
 
   handleTextInput = ({ target: { name, value } }) => {
