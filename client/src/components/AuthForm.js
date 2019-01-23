@@ -51,6 +51,7 @@ class AuthForm extends React.Component {
         <Form onSubmit={this.handleSubmit}>
           <Form.Input
             name="username"
+            required
             value={username}
             onChange={this.handleTextInput}
             placeholder="Enter username"
@@ -58,6 +59,7 @@ class AuthForm extends React.Component {
           />
           <Form.Input
             name="password"
+            required
             value={password}
             onChange={this.handleTextInput}
             placeholder="Enter password"
@@ -76,7 +78,7 @@ class AuthForm extends React.Component {
           }
           <Button
             fluid
-            color="linkedin"
+            color="black"
             icon={signup ? "signup" : 'sign-in'}
             content={signup ? "Create Account" : 'Log In'}
             type="submit"
@@ -90,7 +92,7 @@ class AuthForm extends React.Component {
               marginTop: '20px'
             }}
             fluid
-            color="linkedin"
+            color="black"
             icon={signup ? "sign-in" : 'signup'}
             content={signup ? "Sign In" : "Create an Accout"}
             onClick={() => this.props.history.push(signup? '/signin' : '/signup')}

@@ -1,8 +1,10 @@
 import React from "react";
-import { Segment, Header, Card, Button } from "semantic-ui-react";
-import { Route, Link } from "react-router-dom";
+import { Segment, Header, Button } from "semantic-ui-react";
+import { Route, NavLink } from "react-router-dom";
 import axios from "axios";
 
+import Home from "./components/Home";
+import Navbar from "./components/Navbar";
 import AuthForm from "./components/AuthForm";
 import UserList from "./components/UserList";
 
@@ -11,22 +13,22 @@ class App extends React.Component {
     isLoggedIn: false,
     token: null,
     error: null,
-    users: null,
+    users: null
   };
 
   componentDidMount() {
-    const token = localStorage.getItem('auth');
+    const token = localStorage.getItem("auth");
 
     if (token) {
       this.getUsers(token);
       this.setState({
         isLoggedIn: true,
         token
-      })
+      });
     }
   }
 
-  getUsers = async (token) => {
+  getUsers = async token => {
     try {
       const users = await axios({
         url: `http://localhost:8000/api/protected/users`,
@@ -37,48 +39,57 @@ class App extends React.Component {
 
       this.setState({
         users: users.data
-      })
-
+      });
     } catch (err) {
       console.log(err);
       this.setState({
         isLoggedIn: false,
         token: null,
-        error: err,
-      })
+        error: err
+      });
     }
-  }
+  };
 
   authenticate = async (account, signup) => {
     const baseURL = `http://localhost:8000/api/`;
 
     try {
       const auth = await axios.post(
-        `${baseURL}${signup ? 'register' : 'login'}`,
+        `${baseURL}${signup ? "register" : "login"}`,
         account
       );
 
-      localStorage.setItem('auth', auth.data.token);
+      localStorage.setItem("auth", auth.data.token);
       this.getUsers(auth.data.token);
 
       this.setState({
         isLoggedIn: true,
         token: auth.data.token,
-        error: false,
+        error: false
       });
     } catch (err) {
       console.log(err);
       this.setState({
         isLoggedIn: false,
         token: null,
-        error: err,
+        error: err
       });
     }
-  }
+  };
+
+  logout = () => {
+    localStorage.removeItem("auth");
+    this.setState({
+      isLoggedIn: false,
+      token: null,
+      error: null,
+      users: null
+    });
+  };
 
   render() {
     const { isLoggedIn, users } = this.state;
-    console.log(isLoggedIn);
+
     return (
       <Segment
         style={{
@@ -86,23 +97,19 @@ class App extends React.Component {
           boxShadow: "none"
         }}
       >
-        <Header as="h1" textAlign="center">
-          Welcome to Auth-II
-        </Header>
-        {
-          !isLoggedIn &&
-          <Segment textAlign="center">
-            <Button
-              content={<Link to='/signup'>Sign Up</Link>}
-            />
-            <Button
-              content={<Link to='/signin'>Sign In</Link>}
-            />
-          </Segment>
-        }
-        <Route exact path='/users' render={props => (
-          <UserList {...props} users={users}/>
-        )}/>
+        <Navbar isLoggedIn={isLoggedIn} logout={this.logout} />
+        <Route
+          exact
+          path="/"
+          render={props => <Home {...props} isLoggedIn={isLoggedIn} />}
+        />
+        <Route
+          exact
+          path="/users"
+          render={props => (
+            <UserList {...props} users={users} isLoggedIn={isLoggedIn} />
+          )}
+        />
         <Route
           exact
           path="/signup"

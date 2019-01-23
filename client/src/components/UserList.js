@@ -9,6 +9,13 @@ class UserList extends React.Component {
       this.props.history.push('/signin');
     }
   }
+
+  componentWillReceiveProps(props) {
+    if (!props.isLoggedIn) {
+      this.props.history.push('/signin');
+    }
+  }
+
   render() {
     const { users } = this.props;
     return (
@@ -18,7 +25,6 @@ class UserList extends React.Component {
           alignItems: 'center',
           justifyContent: 'center'
         }}
-        itemsPerRow={4}
       >
         {
           users && users.map(user => (
