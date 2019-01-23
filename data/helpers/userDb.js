@@ -7,5 +7,9 @@ module.exports = {
 
   getUserByName: function (username) {
     return db("users").where("username", username);
+  },
+
+  getUsers: function () {
+    return db("users");
   }
 };

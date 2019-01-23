@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 const db = require("../../data/helpers/userDb");
 const error = require("./registerError");
-const generateToken = require("../common/generateTokon");
+const { generateToken } = require("../common/token");
 
 const router = express.Router();
 
