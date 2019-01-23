@@ -6,10 +6,20 @@ module.exports = {
   },
 
   getUserByName: function (username) {
-    return db("users").where("username", username);
+    return db("users").where("username", username).first();
   },
 
-  getUsers: function () {
-    return db("users");
+  getUserById: function (id) {
+    return db("users").where("id", id).first();
+  },
+
+  getUsers: function (department) {
+    const query = db("users");
+
+    if (department) {
+      query.where('department', department);
+    }
+
+    return query;
   }
 };

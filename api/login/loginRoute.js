@@ -15,12 +15,12 @@ router.post("/", async (req, res, next) => {
   }
 
   try {
-    const result = await db.getUserByName(user.username);
+    const matchUser = await db.getUserByName(user.username);
     if (
-      result.length &&
-      bcrypt.compareSync(user.password, result[0].password)
+      matchUser &&
+      bcrypt.compareSync(user.password, matchUser.password)
     ) {
-      const token = generateToken({ id: result[0].id });
+      const token = generateToken({ id: matchUser.id });
       res.status(200).json({ token });
     } else {
       next(400);
