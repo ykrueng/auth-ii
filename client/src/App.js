@@ -31,7 +31,7 @@ class App extends React.Component {
   getUsers = async token => {
     try {
       const users = await axios({
-        url: `https://auth-ii.herokuapp.com//api/protected/users`,
+        url: `https://auth-ii.herokuapp.com/api/protected/users`,
         headers: { authorization: token }
       });
 
