@@ -11,9 +11,9 @@ const authenticate = require("./common/authenticate");
 const server = express();
 configMdlware(server);
 
-server.get("/", (req, res) => {
-  res.send("Welcome to Auth-ii Project");
-});
+// server.get("/", (req, res) => {
+//   res.send("Welcome to Auth-ii Project");
+// });
 
 server.use("/api/register", registerRoute);
 server.use("/api/login", loginRoute);
