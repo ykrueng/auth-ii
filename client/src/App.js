@@ -31,7 +31,7 @@ class App extends React.Component {
   getUsers = async token => {
     try {
       const users = await axios({
-        url: `http://localhost:8000/api/protected/users`,
+        url: `https://auth-ii.herokuapp.com//api/protected/users`,
         headers: { authorization: token }
       });
 
@@ -51,7 +51,7 @@ class App extends React.Component {
   };
 
   authenticate = async (account, signup) => {
-    const baseURL = `http://localhost:8000/api/`;
+    const baseURL = `https://auth-ii.herokuapp.com/api/`;
 
     try {
       const auth = await axios.post(

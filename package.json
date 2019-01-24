@@ -4,7 +4,9 @@
   "description": "## Topics",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon index.js"
+    "server": "nodemon index.js",
+    "heroku-postbuild": "cd client && yarn && yarn run build",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,7 @@
     "jsonwebtoken": "^8.4.0",
     "knex": "^0.16.3",
     "morgan": "^1.9.1",
+    "path": "^0.12.7",
     "sqlite3": "^4.0.6"
   }
 }
